@@ -1,0 +1,2 @@
+root: C:\Users\jvkee\Documents\movie_api\nvm
+path: C:\Program Files\nodejs
