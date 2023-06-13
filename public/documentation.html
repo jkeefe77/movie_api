@@ -14,5 +14,117 @@
       or genre. Users are able to register a personal account where they can
       create a list of their favorite movies
     </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Business Logic</th>
+          <th>URL</th>
+          <th>HTTP Method</th>
+          <th>Query Parameters</th>
+          <th>Request Body Data Format</th>
+          <th>Response Body Data Format</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Allows a user to be created</td>
+          <td>/users</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>
+            A JSON object of the new user, structured like: {"Username": "",
+            "Password": "", "Email": "", "Birthday": "0000-00-00"}
+          </td>
+          <td>
+            A JSON object of the new user, structured like: {"Username": "",
+            "Password": "", "Email": "", "Birthday": "0000-00-00"}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Returns a list of all movies</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>None</td>
+          <td>A JSON object of all the movies</td>
+        </tr>
+
+        <tr>
+          <td>Returns data about single movie by title</td>
+          <td>/movies/:title</td>
+          <td>GET</td>
+          <td>:title</td>
+          <td>None</td>
+          <td>A JSON object a specific movie</td>
+        </tr>
+
+        <tr>
+          <td>Returns data about a genre by name</td>
+          <td>/movies/:genre/:genreName</td>
+          <td>GET</td>
+          <td>:genreName</td>
+          <td>None</td>
+          <td>A JSON object of a specific genre</td>
+        </tr>
+
+        <tr>
+          <td>Returns data about a director by name</td>
+          <td>/movies/:directors/:directorName</td>
+          <td>GET</td>
+          <td>:directorName</td>
+          <td>None</td>
+          <td>A JSON object of a specific director</td>
+        </tr>
+
+        <tr>
+          <td>Returns a list of all users</td>
+          <td>/users</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>None</td>
+          <td>A JSON object of all the users</td>
+        </tr>
+
+        <tr>
+          <td>Returns a list of a single user by username</td>
+          <td>/users/:id</td>
+          <td>GET</td>
+          <td>:id</td>
+          <td>None</td>
+          <td>A JSON object of the specfic user</td>
+        </tr>
+
+        <tr>
+          <td>Allows users to add a movie to their favorites</td>
+          <td>/users/:id/movies/:movieTitle</td>
+          <td>POST</td>
+          <td>:id, :movieTitle</td>
+          <td>None</td>
+          <td>A JSON of the user</td>
+        </tr>
+
+        <tr>
+          <td>Allows users to remove a movie from their favorites</td>
+          <td>/users/:id/movies/:moviteTitle</td>
+          <td>DELETE</td>
+          <td>:id, :movieTitle</td>
+          <td>None</td>
+          <td>
+            Text confirming the movie has been removed from the user's list
+          </td>
+        </tr>
+
+        <tr>
+          <td>Allows a user to be deleted</td>
+          <td>/users/:id</td>
+          <td>DELETE</td>
+          <td>:id</td>
+          <td>None</td>
+          <td>Text confirming the user has been deleted</td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
