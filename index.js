@@ -1,14 +1,25 @@
-
-
 const express = require("express"),
-  app = express(),
-  morgan = require("morgan"),
-  fs = require("fs"), // import built in node modules fs and path
-  path = require("path"),
-  bodyParser = require("body-parser"),
+bodyParser = require("body-parser"),
   uuid = require("uuid");
+ 
+  const app = express();
+  const morgan = require("morgan");
+  const fs = require("fs"); // import built in node modules fs and path
+ const path = require("path");
+ 
+  
+  const mongoose = require("mongoose");
+  const Models = require("./models.js");
+  
+  const Users = Models.User;
+  const Movies = Models.Movie;
+  const Genres = Models.Genre;
+  const Directors = Models.Director;
+
+mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
 
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
@@ -65,16 +76,30 @@ let movies = [
   },
 ];
 //Create new users
-app.post("/users", (req, res) => {
-  const newUser = req.body;
-
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send("users need names");
-  }
+app.post('/users', (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 //Update
@@ -200,7 +225,29 @@ app.get("/movies/directors/:directorName", (req, res) => {
     res.status(400).send("no such director");
   }
 });
+// Get all users
+app.get('/users', function (req, res) {
+  Users.find()
+  .then (function(users) {
+    res.status(201).json(users);
+    })
+    .catch (function (err) {
+      console.error(err);
+        res.status(500).send("error: " + err);
+      });
+    });
 
+// Get a user by username
+app.get('/users/:Username', (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
