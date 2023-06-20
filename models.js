@@ -26,8 +26,6 @@ let userSchema = mongoose.Schema({
 let Movie = mongoose.model("Movie", movieSchema);
 let User = mongoose.model("User", userSchema);
 
-module.exports.Movie = Movie;
-module.exports.User = User;
 
 app.put('/users/:Username', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
@@ -48,3 +46,6 @@ app.put('/users/:Username', (req, res) => {
       }
     });
   });
+
+module.exports.Movie = Movie;
+module.exports.User = User;

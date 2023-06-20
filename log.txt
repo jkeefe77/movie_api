@@ -158,3 +158,5 @@
 ::1 - - [17/Jun/2023:18:56:45 +0000] "GET /users HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.3"
 ::1 - - [17/Jun/2023:19:03:20 +0000] "GET /users HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.3"
 ::1 - - [17/Jun/2023:19:04:38 +0000] "GET /users HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.3"
+::1 - - [17/Jun/2023:19:55:20 +0000] "GET /users HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.3"
+::1 - - [17/Jun/2023:19:55:59 +0000] "GET /directors HTTP/1.1" 404 148 "-" "PostmanRuntime/7.32.3"
