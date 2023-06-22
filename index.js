@@ -1,135 +1,85 @@
-const express = require("express"),
-      bodyParser = require("body-parser"),
-      uuid = require("uuid");
- 
-  
-  const morgan = require("morgan");
-  const fs = require("fs"); // import built in node modules fs and path
-  const path = require("path");
-  
-  const mongoose = require("mongoose");
-  const Models = require("./models.js");
-  
-  const Users = Models.User;
-  const Movies = Models.Movie;
-  const Genres = Models.Genre;
-  const Directors = Models.Director;
-
-mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
+const express = require("express");
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+const bodyParser = require("body-parser");
+const uuid = require("uuid");
 
+const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
+
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+
+const movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect("mongodb://localhost:27017/mfDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
-  flags: "a",});
-  app.use(morgan("combined", { stream: accessLogStream }));
+  flags: "a",
+});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("combined", { stream: accessLogStream }));
+app.use(express.static("public"));
 
-
-app.use(express.static('public'));
-
-
-// create a write stream (in append mode)
-// a ‘log.txt’ file is created in root directory
-let users = [
-  {
-    id: 1,
-    name: "Kim",
-    favoriteMovies: [],
-  },
-  {
-    id: 2,
-    name: "Joe",
-    favoriteMovies: ["The Departed"],
-  },
-];
-
-let movies = [
-  {
-    title: "The Thing",
-    Genre: {
-      Name: "Horror",
-      Description:
-        "In film and television, horror is a category of narrative fiction (or semi-fiction) intended to strike fear with the viewer",
-    },
-    director: {
-      Name: "John Carpenter",
-    },
-
-    title: "Jaws",
-  },
-  {
-    title: "The Empire Strikes Back",
-  },
-  {
-    title: "The Departed",
-  },
-  {
-    title: "Aliens",
-  },
-  {
-    title: "Die Hard",
-  },
-  {
-    title: "Terminator 2: Judgement Day",
-  },
-  {
-    title: "Ghostbusters",
-  },
-  {
-    title: "The Prestige",
-  },
-  {
-    title: "Unforgiven",
-  },
-];
+app.get("/", (req, res) => {
+  res.send("Welcome to my app!");
+});
 
 //Create new users
-app.post('/users', (req, res) => {
+app.post("/users", (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.body.Username + "already exists");
       } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
         })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
       }
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).send('Error: ' + error);
+      res.status(500).send("Error: " + error);
     });
 });
 
 //Update
 app.put("/users/:Username", (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
     {
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
     }
-  },
-  { new: true },   (err, updatedUser) => {
-    if(err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
+  );
 });
 
 //Create
@@ -195,10 +145,6 @@ app.delete("/users/:Username", (req, res) => {
 app.use(express.static("public/documentation.html"));
 // setup the logger
 
-app.get("/", (req, res) => {
-  res.send("Welcome to my app!");
-});
-
 app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
 });
@@ -241,29 +187,28 @@ app.get("/movies/directors/:directorName", (req, res) => {
   }
 });
 // Get all users
-app.get('/users', function (req, res) {
+app.get("/users", function (req, res) {
   Users.find()
-  .then (function(users) {
-    res.status(201).json(users);
+    .then(function (users) {
+      res.status(201).json(users);
     })
-    .catch (function (err) {
+    .catch(function (err) {
       console.error(err);
-        res.status(500).send("error: " + err);
-      });
+      res.status(500).send("error: " + err);
     });
+});
 
 // Get a user by username
-app.get('/users/:Username', (req, res) => {
+app.get("/users/:Username", (req, res) => {
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).send("Error: " + err);
     });
 });
-
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -274,3 +219,11 @@ app.listen(8080, () => {
   console.log("Your app is listening on port 8080.");
 });
 
+// const http = require('http');
+
+// http.createServer((request, response) => {
+//   response.writeHead(200, {'Content-Type': 'text/plain'});
+//   response.end('Hello Node!\n');
+// }).listen(8080);
+
+// console.log('My first Node test server is running on Port 8080.');
