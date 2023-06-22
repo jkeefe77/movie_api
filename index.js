@@ -150,42 +150,51 @@ app.get("/documentation", (req, res) => {
 });
 
 app.get("/movies", (req, res) => {
-  res.status(200).json(movies);
+  movies
+    .find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 app.get("/movies/:title", (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find((movie) => movie.title === title);
-  if (movie) {
-    return res.status(200).json(movie);
-  } else {
-    res.status(400).send("no such movie");
-  }
+  movies
+    .findOne({ Title: req.params.title })
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 app.get("/movies/genre/:genreName", (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-
-  if (genre) {
-    return res.status(200).json(genre);
-  } else {
-    res.status(400).send("no such genre");
-  }
+  movies
+    .find({ "genre.Name": req.params.genreName })
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      res.status(500).send("Error: " + err);
+    });
 });
 
 app.get("/movies/directors/:directorName", (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.director.Name === directorName
-  ).director;
-
-  if (director) {
-    return res.status(200).json(director);
-  } else {
-    res.status(400).send("no such director");
-  }
+  movies
+    .find({ "Director.Name": req.params.directorName })
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      res.status(500).send("Error: " + err);
+    });
 });
+
 // Get all users
 app.get("/users", function (req, res) {
   Users.find()
@@ -218,12 +227,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("Your app is listening on port 8080.");
 });
-
-// const http = require('http');
-
-// http.createServer((request, response) => {
-//   response.writeHead(200, {'Content-Type': 'text/plain'});
-//   response.end('Hello Node!\n');
-// }).listen(8080);
-
-// console.log('My first Node test server is running on Port 8080.');
