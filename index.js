@@ -10,7 +10,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const Models = require("./models.js");
 
-const movies = Models.Movie;
+const Movies = Models.Movie;
 const Users = Models.User;
 
 mongoose.connect("mongodb://localhost:27017/mfDB", {
@@ -82,25 +82,13 @@ app.put("/users/:Username", (req, res) => {
   );
 });
 
-//Create
-app.post("/users/:Username/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
 
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).json(user);
-  } else {
-    res.status(400).send("no such user");
-  }
-});
 
 //Create
-app.post("/users/:Username/:movieTitle", (req, res) => {
+app.post("/users/:username/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  let User = User.find((user) => user.id == id);
 
   if (user) {
     user.favoriteMovies.push(movieTitle);
@@ -114,7 +102,7 @@ app.post("/users/:Username/:movieTitle", (req, res) => {
 app.delete("/users/:Username/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  let User = User.find((user) => user.id == id);
 
   if (user) {
     user.favoriteMovies = user.favoriteMovies.filter(
@@ -132,7 +120,7 @@ app.delete("/users/:Username/:movieTitle", (req, res) => {
 app.delete("/users/:Username", (req, res) => {
   const { id } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  let User = User.find((user) => user.id == id);
 
   if (user) {
     users = users.filter((user) => user.id != id);
@@ -150,7 +138,7 @@ app.get("/documentation", (req, res) => {
 });
 
 app.get("/movies", (req, res) => {
-  movies
+  Movies
     .find()
     .then((movies) => {
       res.status(200).json(movies);
@@ -162,7 +150,7 @@ app.get("/movies", (req, res) => {
 });
 
 app.get("/movies/:title", (req, res) => {
-  movies
+  Movies
     .findOne({ Title: req.params.title })
     .then((movies) => {
       res.status(200).json(movies);
@@ -173,9 +161,9 @@ app.get("/movies/:title", (req, res) => {
     });
 });
 
-app.get("/movies/genre/:genreName", (req, res) => {
-  movies
-    .find({ "genre.Name": req.params.genreName })
+app.get("/movies/genres/:genreName", (req, res) => {
+  Movies
+    .find({ "Genre.Name": req.params.GenreName })
     .then((movies) => {
       res.status(200).json(movies);
     })
@@ -184,9 +172,9 @@ app.get("/movies/genre/:genreName", (req, res) => {
     });
 });
 
-app.get("/movies/directors/:directorName", (req, res) => {
-  movies
-    .find({ "Director.Name": req.params.directorName })
+app.get("/movies/directors/:directorsName", (req, res) => {
+  Movies
+    .find({ "directors": req.params.DirectorName })
     .then((movies) => {
       res.status(200).json(movies);
     })
@@ -208,8 +196,8 @@ app.get("/users", function (req, res) {
 });
 
 // Get a user by username
-app.get("/users/:Username", (req, res) => {
-  Users.findOne({ Username: req.params.Username })
+app.get("/users/:username", (req, res) => {
+  Users.findOne({ username: req.params.username })
     .then((user) => {
       res.json(user);
     })

@@ -23,8 +23,8 @@ let userSchema = mongoose.Schema({
   FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: "movie" }],
 });
 
-let movie = mongoose.model("movie", movieSchema);
+let Movie = mongoose.model("Movie", movieSchema);
 let User = mongoose.model("User", userSchema);
 
-module.exports.Movie = movie;
+module.exports.Movie = Movie;
 module.exports.User = User;
