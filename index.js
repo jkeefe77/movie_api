@@ -9,6 +9,7 @@ const path = require("path");
 
 const mongoose = require("mongoose");
 const Models = require("./models.js");
+const { error } = require("console");
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -34,10 +35,10 @@ app.get("/", (req, res) => {
 
 //Create new users
 app.post("/users", (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  Users.findOne({ username: req.body.username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + "already exists");
+        return res.status(400).send(req.body.username + "already exists");
       } else {
         Users.create({
           Username: req.body.Username,
@@ -72,54 +73,48 @@ app.put("/users/:username", (req, res) => {
         Birthday: req.body.Birthday,
       },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true }
+  )
+    .then((updatedUser) => {
+      res.status(200).json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Create
-app.post("/users/:Username/movies/:movieTitle", (req, res) => {
+app.post("/users/:username/movies/:movieTitle", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.username },
     {
-      $push: { FavoriteMovies: req.params.Title },
+      $push: { FavoriteMovies: req.params.movieTitle },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true }
+  )
+    .then((updatedUser) => {
+      res.status(200).json(updatedUser);
+    })
+    .catch((err) => {
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //delete
-app.delete("/users/:Username/:movieTitle", (req, res) => {
+app.delete("/users/:username/movies/:movieTitle", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.username },
     {
       $pull: { FavoriteMovies: req.params.movieTitle },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true })
+.then((updatedUser) => {
+  res.status(200).json(updatedUser);
+})
+.catch((err) => {
+  res.status(500).send("Error: " + err);
+});
 });
 
 //delete
