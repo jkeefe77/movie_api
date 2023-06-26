@@ -14,6 +14,26 @@
       or genre. Users are able to register a personal account where they can
       create a list of their favorite movies
     </p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>Allow new users to register</li>
+      <li>Return a list of ALL movies to the user</li>
+      <li>
+        Return data (description, genre, director, image URL, whether it's
+        featured or not) about a single movie by title to the user
+      </li>
+      <li>Return data about a genre (description) by name/title</li>
+      <li>
+        Return data about a director (bio, birth year, death year) by name
+      </li>
+      <li>Return a list of all users</li>
+      <li>Return a single user by username</li>
+      <li>Allow users to update their user info</li>
+      <li>Allow users to add a movie to their list of favorites</li>
+      <li>Allow users to remove a movie from their list of favorites</li>
+      <li>Allow existing users to deregister.</li>
+    </ul>
     <table>
       <thead>
         <tr>
@@ -28,7 +48,7 @@
 
       <tbody>
         <tr>
-          <td>Allows a user to be created</td>
+          <td>Allows a new user to register</td>
           <td>/users</td>
           <td>POST</td>
           <td>None</td>
@@ -88,14 +108,21 @@
         </tr>
 
         <tr>
-          <td>Returns a list of a single user by username</td>
+          <td>Returns a single user by username</td>
           <td>/users/:id</td>
           <td>GET</td>
           <td>:id</td>
           <td>None</td>
           <td>A JSON object of the specfic user</td>
         </tr>
-
+        <tr>
+          <td>Allows user to update their information</td>
+          <td>/users/username</td>
+          <td>PUT</td>
+          <td>username</td>
+          <td>None</td>
+          <td>A JSON object of the specific user</td>
+        </tr>
         <tr>
           <td>Allows users to add a movie to their favorites</td>
           <td>/users/:id/movies/:movieTitle</td>
@@ -126,5 +153,5 @@
         </tr>
       </tbody>
     </table>
-   </body>
+  </body>
 </html>
