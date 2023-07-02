@@ -26,12 +26,20 @@ let auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
 
+//local connect
 mongoose
-  .connect("mongodb://localhost:27017/mfDB", {
+  .connect("mongodb://jvkeefe:mongopassword@filmsonthefly.oaommvx.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("Connected Succesfully"));
+
+
+//port
+// mongoose.connect(process.env.CONNECTION_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
   flags: "a",
