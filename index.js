@@ -13,6 +13,7 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { error } = require("console");
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -26,20 +27,36 @@ let auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
 
-//local connect
-mongoose
-  .connect("mongodb://jvkeefe:mongopassword@filmsonthefly.oaommvx.mongodb.net/?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected Succesfully"));
+// mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+// .then(() => console.log("Connected Succesfully"))
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+
+  //local connect
+// mongoose
+//   .connect("mongodb://jvkeefe:ghostofsparta@filmsonthefly.oaommvx.mongodb.net/FilmsontheFly?retryWrites=true&w=majority", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+  // })
+  // .then(() => console.log("Connected Succesfully"))
+  // .catch((error) => {
+  //   console.error(error);
+  // });
 
 
 //port
-// mongoose.connect(process.env.CONNECTION_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("Connected Succesfully"))
+  .catch((error) => {
+    console.error(error);
+  });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
   flags: "a",
