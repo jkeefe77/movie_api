@@ -13,6 +13,8 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { error } = require("console");
 
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,25 +37,24 @@ require("./passport.js");
 //     console.error(error);
 //   });
 
-
-  //local connect
+//local connect
 // mongoose
-//   .connect("mongodb://jvkeefe:ghostofsparta@filmsonthefly.oaommvx.mongodb.net/FilmsontheFly?retryWrites=true&w=majority", {
+//   .connect("mongodb://jvkeefe:<PASSWORD>@filmsonthefly.oaommvx.mongodb.net/FilmsontheFly?retryWrites=true&w=majority", {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true,
-  // })
-  // .then(() => console.log("Connected Succesfully"))
-  // .catch((error) => {
-  //   console.error(error);
-  // });
-
+// })
+// .then(() => console.log("Connected Succesfully"))
+// .catch((error) => {
+//   console.error(error);
+// });
 
 //port
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("Connected Succesfully"))
+mongoose
+  .connect(process.env.CONNECTION_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected Succesfully"))
   .catch((error) => {
     console.error(error);
   });
@@ -87,6 +88,7 @@ app.post(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
+    console.log(Users);
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ Username: req.body.Username })
       .then((user) => {
