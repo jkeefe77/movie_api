@@ -16,17 +16,19 @@ passport.use(
     (username, password, callback) => {
       console.log(username + " " + password);
       try {
-        Users.findOne({ Username: username }).then((user) => {
-          console.log("no match for" + username);
-
+        console.log(Models);
+        console.log(Models.Movie);
+        console.log(Models.User);
+        Models.User.findOne({ Username: username }).then((user) => {
           if (!user) {
             console.log("incorrect username");
             return callback(null, false, {
               message: "Incorrect username",
             });
           }
+          console.log(user);
 
-          if (!user.validatePassword(password)) {
+          if (user.Password != password) {
             console.log("incorrect password");
             return callback(null, false, { message: "Incorrect password." });
           }
