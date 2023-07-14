@@ -1270,3 +1270,4 @@
 127.0.0.1 - - [03/Jul/2023:15:05:26 +0000] "POST /users/ HTTP/1.1" 201 178 "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [05/Jul/2023:16:40:33 +0000] "PUT /users/NewUser1 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [05/Jul/2023:16:54:10 +0000] "PUT /users/NewUser1 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [14/Jul/2023:21:25:26 +0000] "POST /users/ HTTP/1.1" 422 122 "-" "PostmanRuntime/7.32.3"
