@@ -74,11 +74,14 @@ app.get("/", (req, res) => {
 app.post(
   "/users",
   [
-    check("Username", "Username is required").isLength({ min: 5 }),
+    check("Username", "Must Contain at Least 5 characters").isLength({
+      min: 5,
+    }),
     check(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
+    check("Username", "Must Contain at Least 5 characters").not().isEmpty(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
@@ -97,7 +100,7 @@ app.post(
         } else {
           Users.create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday,
           })
@@ -142,7 +145,7 @@ app.put(
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
@@ -228,19 +231,16 @@ app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
 });
 
-app.get(
-  "/movies",
-  (req, res) => {
-    Movies.find()
-      .then((movies) => {
-        res.status(201).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get("/movies", (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
 app.get(
   "/movies/:title",
