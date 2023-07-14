@@ -124,11 +124,14 @@ app.post(
 app.put(
   "/users/:Username",
   [
-    check("Username", "Username is required").isLength({ min: 5 }),
+    check("Username", "Must Contain at least 5 Characters").isLength({
+      min: 5,
+    }),
     check(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
+    check("Username", "Must Contain at Least 5 characters").not().isEmpty(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],

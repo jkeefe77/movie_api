@@ -28,7 +28,7 @@ passport.use(
           }
           console.log(user);
 
-          if (user.Password != password) {
+          if (user.Password != hashedPassword) {
             console.log("incorrect password");
             return callback(null, false, { message: "Incorrect password." });
           }
