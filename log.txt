@@ -1279,3 +1279,7 @@
 127.0.0.1 - - [14/Jul/2023:22:15:48 +0000] "PUT /users/Movie_Fan123?Username=Movie_Fan123&Password=newerpassword HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [14/Jul/2023:22:15:54 +0000] "PUT /users/Movie_Fan123 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [14/Jul/2023:22:20:12 +0000] "PUT /users/Movie_Fan123 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [14/Jul/2023:22:45:04 +0000] "PUT /users/Movie_Fan123?username=Movie_Fan123 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [14/Jul/2023:22:45:19 +0000] "GET /users/NewUser1 HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [14/Jul/2023:22:46:32 +0000] "GET /login/?Username=NewUser1&Password=newpassword HTTP/1.1" 404 145 "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [14/Jul/2023:22:46:38 +0000] "GET /login/?Username=NewUser1 HTTP/1.1" 404 145 "-" "PostmanRuntime/7.32.3"
