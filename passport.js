@@ -13,35 +13,29 @@ passport.use(
       usernameField: "Username",
       passwordField: "Password",
     },
-    (username, password, callback) => {
-      console.log(username + " " + password);
-      try {
-        console.log(Models);
-        console.log(Models.Movie);
-        console.log(Models.User);
-        Models.User.findOne({ Username: username }).then((user) => {
+    async (username, password, callback) => {
+      console.log(`${username} ${password}`);
+      await Users.findOne({ Username: username })
+        .then((user) => {
           if (!user) {
             console.log("incorrect username");
             return callback(null, false, {
-              message: "Incorrect username",
+              message: "Incorrect username or password.",
             });
           }
-          console.log(user);
-
-          if (user.Password != hashedPassword) {
+          if (!user.validatePassword(password)) {
             console.log("incorrect password");
             return callback(null, false, { message: "Incorrect password." });
           }
           console.log("finished");
           return callback(null, user);
+        })
+        .catch((error) => {
+          if (error) {
+            console.log(error);
+            return callback(error);
+          }
         });
-      } catch (error) {
-        console.error(error);
-        if (error) {
-          console.log(error);
-          return callback(error);
-        }
-      }
     }
   )
 );
