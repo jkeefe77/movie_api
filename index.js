@@ -29,26 +29,6 @@ let auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
 
-// mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-// .then(() => console.log("Connected Succesfully"))
-//   .catch((error) => {
-//     console.error(error);
-//   });
-
-//local connect
-// mongoose
-//   .connect("mongodb://jvkeefe:<PASSWORD>@filmsonthefly.oaommvx.mongodb.net/FilmsontheFly?retryWrites=true&w=majority", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// })
-// .then(() => console.log("Connected Succesfully"))
-// .catch((error) => {
-//   console.error(error);
-// });
-
-//port
 mongoose
   .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
