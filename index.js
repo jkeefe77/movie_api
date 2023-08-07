@@ -28,6 +28,10 @@ let allowedOrigins = [
   "http://localhost:1234",
   "https://myflixcinema.netlify.app",
 ];
+
+app.use(cors());
+=======
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -44,9 +48,10 @@ app.use(
   })
 );
 
-let auth = require("./auth.js")(app);
-const passport = require("passport");
-require("./passport.js");
+// let auth = require("./auth.js")(app);
+// const passport = require("passport");
+// require("./passport.js");
+
 
 mongoose
   .connect(process.env.CONNECTION_URI, {
