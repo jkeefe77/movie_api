@@ -28,7 +28,10 @@ let allowedOrigins = [
   "http://localhost:1234",
   "https://myflixcinema.netlify.app",
 ];
+
 app.use(cors());
+=======
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -44,30 +47,12 @@ app.use(
     },
   })
 );
+
 // let auth = require("./auth.js")(app);
 // const passport = require("passport");
 // require("./passport.js");
 
-// mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-// .then(() => console.log("Connected Succesfully"))
-//   .catch((error) => {
-//     console.error(error);
-//   });
-
-//local connect
-// mongoose
-//   .connect("mongodb://jvkeefe:<PASSWORD>@filmsonthefly.oaommvx.mongodb.net/FilmsontheFly?retryWrites=true&w=majority", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// })
-// .then(() => console.log("Connected Succesfully"))
-// .catch((error) => {
-//   console.error(error);
-// });
-
-//port
 mongoose
   .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
@@ -143,11 +128,14 @@ app.post(
 app.put(
   "/users/:Username",
   [
-    check("Username", "Username is required").isLength({ min: 5 }),
+    check("Username", "Must Contain at least 5 Characters").isLength({
+      min: 5,
+    }),
     check(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
+    check("Username", "Must Contain at Least 5 characters").not().isEmpty(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
