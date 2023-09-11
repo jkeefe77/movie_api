@@ -30,7 +30,7 @@ let allowedOrigins = [
 ];
 
 app.use(cors());
-=======
+
 
 app.use(
   cors({
