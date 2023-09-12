@@ -2,3 +2,4 @@ node_modules/
 nvm/
 heroku/
 .env
+log.txt
