@@ -223,12 +223,16 @@ app.delete(
         username: req.params.username,
       });
       if (!user) {
-        res.status(400).json({ error: `${req.params.username} was not found` });
+        const message = `${req.params.username} was not found`;
+        console.errror(message);
+        res.status(400).json({ error: message });
       } else {
-        res.status(200).json({ message: `${req.params.username} was deleted` });
+        const message = `${req.params.username} was deleted`;
+        console.log(message); //Log success
+        res.status(200).json({ message: message });
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
       res.status(500).send("Error: " + err);
     }
   }
