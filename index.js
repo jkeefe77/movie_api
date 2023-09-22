@@ -212,21 +212,25 @@ app.delete(
 
 //delete
 app.delete(
-  "/users/:Username",
+  "/users/:username",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Users.findOneAndRemove({ Username: req.params.Username })
-      .then((user) => {
-        if (!user) {
-          res.status(400).send(req.params.Username + " was not found");
-        } else {
-          res.status(200).send(req.params.Username + " was deleted.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
+  async (req, res) => {
+    if (req.user.username !== req.params.username) {
+      return res.status(400).json({ error: "Permission denied" });
+    }
+    try {
+      const user = await Users.findOneAndRemove({
+        username: req.params.username,
       });
+      if (!user) {
+        res.status(400).json({ error: `${req.params.username} was not found` });
+      } else {
+        res.status(200).json({ message: `${req.params.username} was deleted` });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
   }
 );
 
