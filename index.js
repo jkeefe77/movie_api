@@ -75,7 +75,7 @@ app.get("/", (req, res) => {
 
 //Create new users
 app.post(
-  "/users/:Username",
+  "/users",
   [
     check("Username", "Must Contain at Least 5 characters").isLength({
       min: 5,
