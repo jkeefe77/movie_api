@@ -213,7 +213,7 @@ app.delete(
 //delete user
 app.delete(
   "/users/:username",
-  passport.authenticate("jwt", { session: true }),
+  passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     if (req.user.username !== req.params.username) {
       return res.status(400).json({ error: "Permission denied" });
