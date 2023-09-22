@@ -75,7 +75,7 @@ app.get("/", (req, res) => {
 
 //Create new users
 app.post(
-  "/users",
+  "/users/:Username",
   [
     check("Username", "Must Contain at Least 5 characters").isLength({
       min: 5,
@@ -123,7 +123,7 @@ app.post(
   }
 );
 
-//Update
+//Update user profile
 app.put(
   "/users/:Username",
   [
@@ -168,7 +168,7 @@ app.put(
   }
 );
 
-//Create
+//Add fav movie
 app.post(
   "/users/:Username/movies/:movieTitle",
   passport.authenticate("jwt", { session: false }),
@@ -189,7 +189,7 @@ app.post(
   }
 );
 
-//delete
+//delete fav movie
 app.delete(
   "/users/:Username/movies/:movieTitle",
   passport.authenticate("jwt", { session: false }),
@@ -210,7 +210,7 @@ app.delete(
   }
 );
 
-//delete
+//delete user
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
