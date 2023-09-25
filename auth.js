@@ -4,6 +4,11 @@ const jwt = require("jsonwebtoken"),
   passport = require("passport");
 
 require("./passport.js");
+/**
+ * @param {string} user
+ * @returns {*} jwtsecret
+ * this will return a randomized token for the user that will expire in 7 days.
+ */
 
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
@@ -12,6 +17,13 @@ let generateJWTToken = (user) => {
     algorithm: "HS256",
   });
 };
+
+/**
+ *
+ * @param {*} router
+ * @returns {*} user,jwtsecret
+ * this will create a token once the user has created an account and trying to log in.
+ */
 
 module.exports = (router) => {
   router.post("/login", (req, res) => {
